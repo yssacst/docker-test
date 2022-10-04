@@ -1,0 +1,31 @@
+version: 0.2
+
+env:
+  variables:
+    VERSION: "1.6.1"
+    LC_ALL: C.UTF-8
+    ENV LANG: pt_BR.UTF-8
+    ENV LANGUAGE: pt_BR.UTF-8
+
+  exported-variables:
+    - VERSION
+
+phases:
+  pre_build:
+    commands:
+      - echo login in docker...
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build --no-cache -t app .
+      - "echo \"{\\\"Tags\\\" : {\\\"BuildId\\\": \\\"$CODEBUILD_BUILD_ID\\\",\\\"CommitId\\\": \\\"$CODEBUILD_RESOLVED_SOURCE_VERSION\\\",\\\"Version\\\": \\\"$VERSION\\\"}}\" > template-config.json"
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - echo "The End"
+artifacts:
+  files:
+    - serverless-output.yaml
+    - template-config.json
