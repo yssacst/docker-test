@@ -19,6 +19,9 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...
       - docker build --no-cache -t app .
+      - echo "$VERSION"
+      - echo "${VERSION}"
+      - echo "\\\$VERSION\\\"
       - "echo \"{\\\"Tags\\\" : {\\\"BuildId\\\": \\\"$CODEBUILD_BUILD_ID\\\",\\\"CommitId\\\": \\\"$CODEBUILD_RESOLVED_SOURCE_VERSION\\\",\\\"Version\\\": \\\"$VERSION\\\"}}\" > template-config.json"
   post_build:
     commands:
@@ -27,5 +30,4 @@ phases:
       - echo "The End"
 artifacts:
   files:
-    - serverless-output.yaml
     - template-config.json
